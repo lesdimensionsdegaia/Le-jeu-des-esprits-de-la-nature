@@ -1,793 +1,871 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Les Esprits de la Nature — Les Dimensions de Gaïa</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les Dimensions de Gaïa — Expérience Absolue</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --or: #c9a84c;
+            --or-clair: #f0d080;
+            --vert-foret: #0e1e0e;
+            --vert-mousse: #1a2e1a;
+            --vert-sauge: #4a7c59;
+            --vert-emeraude: #00ff66;
+            --noir-profond: #050805;
+            --blanc-brume: #f5f0e8;
+            --neon-bleu: #00f3ff;
+            --rouge-feu: #ff3333;
+        }
 
-<style>
-  :root {
-    --or: #c9a84c;
-    --or-clair: #f0d080;
-    --vert-foret: #0e1e0e;
-    --vert-mousse: #1a2e1a;
-    --vert-sauge: #4a7c59;
-    --vert-emeraude: #00ff66;
-    --noir-profond: #050805;
-    --blanc-brume: #f5f0e8;
-    --neon-bleu: #00f3ff;
-    --rouge-feu: #ff3333;
-  }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--noir-profond);
+            color: var(--blanc-brume);
+            font-family: 'Cormorant Garamond', serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(ellipse at 20% 20%, rgba(42,74,42,0.4) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(0,243,255,0.08) 0%, transparent 60%);
+        }
 
-  body {
-    background: var(--noir-profond);
-    color: var(--blanc-brume);
-    font-family: 'Cormorant Garamond', serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-    background-image:
-      radial-gradient(ellipse at 20% 20%, rgba(42,74,42,0.4) 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 80%, rgba(0,243,255,0.08) 0%, transparent 60%),
-      radial-gradient(ellipse at 50% 50%, rgba(5,8,5,1) 0%, transparent 100%);
-  }
+        /* Bouton Musique persistant en haut à droite */
+        #statut-musique {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: rgba(14,30,14,0.85);
+            border: 1px solid var(--or);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-family: 'Cinzel Decorative', cursive;
+            color: var(--or-clair);
+            cursor: pointer;
+            z-index: 9999;
+            box-shadow: 0 0 10px rgba(201,168,76,0.3);
+            transition: all 0.3s;
+        }
+        #statut-musique.actif {
+            border-color: var(--vert-emeraude);
+            box-shadow: 0 0 12px rgba(0,255,102,0.4);
+        }
 
-  .particules {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-  }
-  .particule {
-    position: absolute;
-    border-radius: 50%;
-    animation: flotter linear infinite;
-    opacity: 0;
-  }
-  @keyframes flotter {
-    0% { transform: translateY(100vh); opacity: 0; }
-    10% { opacity: 0.5; }
-    90% { opacity: 0.5; }
-    100% { transform: translateY(-10vh); opacity: 0; }
-  }
+        .particules {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0; overflow: hidden;
+        }
+        .particule {
+            position: absolute; border-radius: 50%;
+            animation: flotter linear infinite; opacity: 0;
+        }
+        @keyframes flotter {
+            0% { transform: translateY(100vh); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-10vh); opacity: 0; }
+        }
 
-  #app {
-    position: relative;
-    z-index: 1;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 20px;
-  }
+        #app {
+            position: relative; z-index: 1;
+            max-width: 900px; margin: 0 auto; padding: 20px;
+        }
 
-  .entete {
-    text-align: center;
-    padding: 25px 20px;
-    border-bottom: 1px solid rgba(201,168,76,0.25);
-    margin-bottom: 20px;
-  }
-  .entete h1 {
-    font-family: 'Cinzel Decorative', cursive;
-    font-size: clamp(20px, 5vw, 36px);
-    color: var(--or-clair);
-    text-shadow: 0 0 20px rgba(201,168,76,0.3);
-  }
+        .entete {
+            text-align: center; padding: 25px 20px;
+            border-bottom: 1px solid rgba(201,168,76,0.25); margin-bottom: 20px;
+        }
+        .entete h1 {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: clamp(22px, 5vw, 38px);
+            color: var(--or-clair);
+            text-shadow: 0 0 20px rgba(201,168,76,0.4);
+        }
 
-  .barre-score {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(26,46,26,0.4);
-    border: 1px solid rgba(0, 243, 255, 0.2);
-    box-shadow: 0 0 15px rgba(0, 243, 255, 0.05);
-    border-radius: 12px;
-    padding: 12px 20px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .score-item { text-align: center; }
-  .score-item .label {
-    font-size: 11px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--or);
-    display: block;
-  }
-  .score-item .valeur {
-    font-family: 'Cinzel Decorative', cursive;
-    font-size: 18px;
-    color: var(--or-clair);
-  }
+        .barre-score {
+            display: table; width: 100%;
+            background: rgba(26,46,26,0.6);
+            border: 1px solid rgba(0, 243, 255, 0.25);
+            border-radius: 12px; padding: 15px; margin-bottom: 20px;
+        }
+        .score-item { display: table-cell; text-align: center; width: 25%; }
+        .score-item .label {
+            font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+            color: var(--or); display: block; margin-bottom: 4px;
+        }
+        .score-item .valeur { font-family: 'Cinzel Decorative', cursive; font-size: 17px; color: var(--or-clair); }
 
-  .nav-jeux {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-  }
-  .btn-nav {
-    flex: 1;
-    min-width: 100px;
-    padding: 12px 4px;
-    background: rgba(14,30,14,0.6);
-    border: 1px solid rgba(201,168,76,0.3);
-    border-radius: 6px;
-    color: var(--blanc-brume);
-    font-family: 'Cinzel Decorative', cursive;
-    font-size: 11px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .btn-nav:hover, .btn-nav.actif {
-    background: rgba(201,168,76,0.15);
-    border-color: var(--neon-bleu);
-    color: #fff;
-    box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
-  }
+        .nav-jeux { display: table; width: 100%; border-collapse: separate; border-spacing: 6px; margin-bottom: 20px; }
+        .btn-nav {
+            display: table-cell; text-align: center; padding: 12px 5px;
+            background: rgba(14,30,14,0.7); border: 1px solid rgba(201,168,76,0.3);
+            border-radius: 6px; color: var(--blanc-brume);
+            font-family: 'Cinzel Decorative', cursive; font-size: 11px; cursor: pointer;
+        }
+        .btn-nav.actif {
+            background: rgba(201,168,76,0.2); border-color: var(--neon-bleu); color: #fff;
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+        }
 
-  .zone-jeu {
-    background: rgba(14,30,14,0.7);
-    border: 1px solid rgba(201,168,76,0.15);
-    border-radius: 14px;
-    padding: 25px;
-    margin-bottom: 20px;
-    backdrop-filter: blur(8px);
-  }
+        .zone-jeu {
+            background: rgba(14,30,14,0.8); border: 1px solid rgba(201,168,76,0.2);
+            border-radius: 14px; padding: 25px; margin-bottom: 20px; backdrop-filter: blur(8px);
+        }
 
-  .compagnon-box {
-    background: rgba(0, 243, 255, 0.04);
-    border-left: 3px solid var(--neon-bleu);
-    padding: 12px 15px;
-    margin-bottom: 20px;
-    border-radius: 0 6px 6px 0;
-    font-size: 15px;
-    line-height: 1.5;
-  }
+        .compagnon-box {
+            background: rgba(0, 243, 255, 0.05); border-left: 4px solid var(--neon-bleu);
+            padding: 15px; margin-bottom: 20px; border-radius: 0 8px 8px 0; font-size: 16px; line-height: 1.5;
+        }
 
-  .carte-question {
-    background: rgba(0,0,0,0.5);
-    border: 1px solid rgba(201,168,76,0.2);
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    text-align: center;
-  }
+        .carte-question {
+            background: rgba(0,0,0,0.6); border: 1px solid rgba(201,168,76,0.25);
+            border-radius: 10px; padding: 25px; margin-bottom: 20px; text-align: center;
+        }
 
-  .grille-reponses {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  .btn-reponse {
-    padding: 12px;
-    background: rgba(26,46,26,0.5);
-    border: 1px solid rgba(201,168,76,0.2);
-    border-radius: 8px;
-    color: var(--blanc-brume);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .btn-reponse:hover {
-    border-color: var(--or);
-    background: rgba(201,168,76,0.1);
-  }
-  .btn-reponse.correct { background: rgba(0,255,102,0.2); border-color: var(--vert-emeraude); color: #fff; }
-  .btn-reponse.faux { background: rgba(255,51,51,0.2); border-color: var(--rouge-feu); color: #fff; }
+        .grille-reponses { display: block; margin-bottom: 20px; text-align: center; }
+        .btn-reponse {
+            display: inline-block; width: 45%; margin: 8px 2%; padding: 14px;
+            background: rgba(26,46,26,0.6); border: 1px solid rgba(201,168,76,0.25);
+            border-radius: 8px; color: var(--blanc-brume); font-family: 'Cormorant Garamond', serif;
+            font-size: 17px; cursor: pointer; transition: all 0.2s; vertical-align: top;
+        }
+        .btn-reponse:hover { border-color: var(--or); background: rgba(201,168,76,0.15); }
+        .btn-reponse.correct { background: rgba(0,255,102,0.25); border-color: var(--vert-emeraude); color: #fff; font-weight: bold; }
+        .btn-reponse.faux { background: rgba(255,51,51,0.25); border-color: var(--rouge-feu); color: #fff; }
 
-  .carte-indice {
-    background: rgba(0,0,0,0.3);
-    border: 1px solid rgba(0, 243, 255, 0.15);
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 10px;
-    font-size: 15px;
-  }
+        .carte-indice {
+            background: rgba(0,0,0,0.4); border: 1px solid rgba(0, 243, 255, 0.2);
+            border-radius: 8px; padding: 15px; margin-bottom: 12px; font-size: 16px;
+        }
 
-  .zone-saisie { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
-  .input-reponse {
-    flex: 1; min-width: 200px; padding: 12px;
-    background: rgba(0,0,0,0.5); border: 1px solid rgba(201,168,76,0.3);
-    border-radius: 6px; color: #fff; font-size: 16px; outline: none;
-  }
-  .input-reponse:focus { border-color: var(--neon-bleu); }
+        .zone-saisie { margin-top: 20px; text-align: center; }
+        .input-reponse {
+            width: 70%; padding: 12px 15px; background: rgba(0,0,0,0.6);
+            border: 1px solid rgba(201,168,76,0.4); border-radius: 6px;
+            color: #fff; font-size: 16px; outline: none; margin-bottom: 15px; display: inline-block;
+        }
 
-  .btn-action {
-    padding: 10px 24px; border-radius: 20px; border: none; cursor: pointer;
-    font-family: 'Cinzel Decorative', cursive; font-size: 11px; font-weight: bold; transition: all 0.2s;
-  }
-  .btn-principal { background: linear-gradient(135deg, #c9a84c, #8b6914); color: #000; }
-  .btn-principal:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(201,168,76,0.3); }
-  .btn-secondaire { background: rgba(0,0,0,0.4); color: var(--neon-bleu); border: 1px solid var(--neon-bleu); }
+        .btn-action {
+            display: inline-block; padding: 12px 28px; border-radius: 25px; border: none; cursor: pointer;
+            font-family: 'Cinzel Decorative', cursive; font-size: 11px; font-weight: bold; transition: all 0.2s; margin: 5px;
+        }
+        .btn-principal { background: linear-gradient(135deg, #c9a84c, #8b6914); color: #000; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
+        .btn-principal:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(201,168,76,0.3); }
+        .btn-secondaire { background: rgba(0,0,0,0.5); color: var(--neon-bleu); border: 1px solid var(--neon-bleu); }
 
-  .barre-progression { background: rgba(0,0,0,0.4); border-radius: 10px; height: 6px; margin-bottom: 15px; overflow: hidden; }
-  .progression-remplie { height: 100%; background: var(--neon-bleu); width: 0%; transition: width 0.3s; }
+        .barre-progression { background: rgba(0,0,0,0.5); border-radius: 10px; height: 8px; margin-bottom: 20px; overflow: hidden; }
+        .progression-remplie { height: 100%; background: linear-gradient(90deg, var(--neon-bleu), var(--vert-emeraude)); width: 0%; transition: width 0.3s; }
 
-  .feedback { padding: 12px; border-radius: 6px; margin-bottom: 15px; text-align: center; font-style: italic; display: none; }
+        .feedback { padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-style: italic; display: none; font-size: 17px; }
+        .feedback.correct { background: rgba(0,255,102,0.15); border: 1px solid var(--vert-emeraude); color: var(--vert-emeraude); }
+        .feedback.faux { background: rgba(255,51,51,0.15); border: 1px solid var(--rouge-feu); color: #ff8888; }
 
-  /* STYLE DU CERTIFICAT INTERACTIF CALIBRÉ POUR L'EXPORTATION PDF */
-  #certificat-pdf-canvas {
-    width: 950px;
-    height: 650px;
-    background-color: #f7f3e8;
-    color: #241c11;
-    font-family: 'Cormorant Garamond', serif;
-    position: relative;
-    padding: 40px;
-    box-sizing: border-box;
-    border: 20px solid #222b22;
-    background-image: radial-gradient(circle, rgba(255,255,255,0.5) 0%, rgba(201,168,76,0.05) 100%);
-  }
-  .pdf-inner-border {
-    position: absolute;
-    top: 5px; bottom: 5px; left: 5px; right: 5px;
-    border: 2px dashed #c9a84c;
-    pointer-events: none;
-  }
-  .pdf-main-title {
-    font-family: 'Cinzel Decorative', cursive;
-    text-align: center;
-    font-size: 28px;
-    color: #1b331b;
-    letter-spacing: 2px;
-    margin-bottom: 5px;
-  }
-  .pdf-grid-stats {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 30px;
-    border-top: 1px solid #c9a84c;
-    border-bottom: 1px solid #c9a84c;
-    padding: 15px 10px;
-  }
-  .pdf-col { width: 48%; }
-  .pdf-badge-round {
-    width: 100px; height: 100px; border-radius: 50%;
-    background: #1a2e1a; color: #fff; margin: 10px auto;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    border: 2px solid #c9a84c;
-  }
-</style>
+        /* ========================================================= */
+        /* STRUCTURE DU CERTIFICAT - FIXATION STRIPAGE SUR 1 SEULE PAGE */
+        /* ========================================================= */
+        #print-zone-a4 {
+            width: 1040px; 
+            height: 720px; 
+            background-color: #fefcf7;
+            color: #1a231a;
+            font-family: 'Cormorant Garamond', serif;
+            position: relative;
+            padding: 40px 50px;
+            box-sizing: border-box;
+            border: 20px solid #112211;
+            background-image: radial-gradient(circle, #ffffff 40%, #f4eee1 100%);
+            page-break-inside: avoid;
+            page-break-after: always;
+            margin: 0 auto;
+        }
+        .cert-inner-border {
+            position: absolute;
+            top: 6px; bottom: 6px; left: 6px; right: 6px;
+            border: 2px solid #c9a84c;
+            pointer-events: none;
+        }
+        .cert-top-title {
+            text-align: center;
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 13px;
+            letter-spacing: 6px;
+            color: #8b6914;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+        .cert-main-heading {
+            text-align: center;
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 38px;
+            color: #0e240e;
+            font-weight: 900;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .cert-attribution {
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 15px;
+            font-style: italic;
+            color: #444;
+        }
+        .cert-name {
+            text-align: center;
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 34px;
+            color: #8b6914;
+            font-weight: 900;
+            border-bottom: 3px double #c9a84c;
+            display: table;
+            margin: 0 auto 30px auto;
+            padding: 0 50px 8px 50px;
+        }
+        .cert-table-layout {
+            display: table;
+            width: 100%;
+            margin-top: 15px;
+        }
+        .cert-table-cell {
+            display: table-cell;
+            vertical-align: top;
+            width: 50%;
+        }
+        .cert-left-panel {
+            text-align: center;
+            border-right: 1px dashed rgba(201,168,76,0.6);
+            padding-right: 30px;
+        }
+        .cert-rank-title {
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #555;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .cert-rank-value {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 20px;
+            font-weight: bold;
+            color: #0e240e;
+        }
+        .cert-seal-circle {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: #0e240e;
+            color: #fff;
+            margin: 15px auto 0 auto;
+            border: 4px double #c9a84c;
+            text-align: center;
+        }
+        .cert-right-panel {
+            padding-left: 40px;
+        }
+        .cert-charter-title {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 15px;
+            color: #0e240e;
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        .cert-charter-list {
+            font-size: 14px;
+            font-style: italic;
+            line-height: 1.5;
+            color: #222;
+        }
+        .cert-quote-box {
+            margin-top: 35px;
+            background: rgba(201,168,76,0.08);
+            border-left: 5px solid #4a7c59;
+            padding: 15px 20px;
+            font-style: italic;
+            font-size: 16px;
+            line-height: 1.5;
+            border-radius: 0 6px 6px 0;
+        }
+        .cert-signatures {
+            position: absolute;
+            bottom: 40px;
+            left: 50px;
+            right: 50px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            padding-top: 15px;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
+
+<div id="statut-musique" onclick="basculerMusiqueDirecte()">🎵 Musique : Désactivée</div>
 
 <div class="particules" id="particules"></div>
 
 <div id="app">
-  <div class="entete">
-    <h1>Les Dimensions de Gaïa</h1>
-    <p style="font-size:15px; font-style:italic; color:var(--or);">Sous le haut patronage de l'Elfe Rodolphe</p>
-  </div>
+    <div class="entete">
+        <h1>Les Dimensions de Gaïa</h1>
+        <p style="font-size:16px; font-style:italic; color:var(--or); margin-top:5px;">L'Éveil Sacré des Esprits de la Nature</p>
+    </div>
 
-  <div class="barre-score">
-    <div class="score-item"><span class="label">Aventurier</span><span class="valeur" id="ui-pseudo">En attente...</span></div>
-    <div class="score-item"><span class="label">Points</span><span class="valeur" id="ui-score">0</span></div>
-    <div class="score-item"><span class="label">Rang</span><span class="valeur" id="ui-grade" style="color:var(--vert-emeraude)">🌱 Incarné</span></div>
-    <div class="score-item"><span class="label">Compteur</span><span class="valeur" id="ui-progression">—</span></div>
-  </div>
+    <div class="barre-score">
+        <div class="score-item"><span class="label">Explorateur</span><span class="valeur" id="ui-pseudo">En attente...</span></div>
+        <div class="score-item"><span class="label">Points</span><span class="valeur" id="ui-score">0</span></div>
+        <div class="score-item"><span class="label">Rang</span><span class="valeur" id="ui-grade" style="color:var(--vert-emeraude)">🌱 Initié</span></div>
+        <div class="score-item"><span class="label">Progression</span><span class="valeur" id="ui-progression">—</span></div>
+    </div>
 
-  <div class="nav-jeux">
-    <button class="btn-nav actif" id="btn-accueil" onclick="afficherEcran('accueil')">🏠 Accueil</button>
-    <button class="btn-nav" id="btn-jeu1" onclick="lancerJeu1()">🌿 Épreuve 1</button>
-    <button class="btn-nav" id="btn-jeu2" onclick="lancerJeu2()">🎬 Épreuve 2</button>
-    <button class="btn-nav" id="btn-jeu3" onclick="lancerJeu3()">📝 Épreuve 3</button>
-    <button class="btn-nav" id="btn-resultats" onclick="calculerFin()">🏆 Parchemin</button>
-  </div>
+    <div class="nav-jeux">
+        <div class="btn-nav actif" id="btn-accueil" onclick="afficherEcran('accueil')">🏠 Accueil</div>
+        <div class="btn-nav" id="btn-jeu1" onclick="lancerJeu1()">🌿 Jeu 1</div>
+        <div class="btn-nav" id="btn-jeu2" onclick="lancerJeu2()">🎬 Jeu 2</div>
+        <div class="btn-nav" id="btn-jeu3" onclick="lancerJeu3()">📝 Jeu 3</div>
+        <div class="btn-nav" id="btn-resultats" onclick="calculerFin()">🏆 Parchemin</div>
+    </div>
 
-  <div class="zone-jeu" id="zone-principale"></div>
+    <div class="zone-jeu" id="zone-principale"></div>
 </div>
 
-<div style="display: none; overflow: hidden;">
-  <div id="certificat-pdf-canvas">
-    <div class="pdf-inner-border"></div>
-    <div style="text-align:center; font-family:'Cinzel Decorative'; font-size:12px; letter-spacing:4px; color:#c9a84c;">✦ HAUT CONSEIL DES SAGES DE GAÏA ✦</div>
-    <div class="pdf-main-title">ATTESTATION DE SAGESSE ÉLÉMENTAIRE</div>
-    
-    <div style="text-align:center; font-size:16px; margin-top:15px;">
-      Le Grand Guide Holistique octroie solennellement ce titre impérial à :
-    </div>
-    <div style="text-align:center; font-family:'Cinzel Decorative'; font-size:26px; color:#8b6914; font-weight:bold; margin:10px 0; border-bottom:2px solid #c9a84c; display:inline-block; padding:0 30px;" id="pdf-output-pseudo">
-      [Aventurier]
-    </div>
+<div style="display: none; box-sizing: border-box;">
+    <div id="print-zone-a4">
+        <div class="cert-inner-border"></div>
+        <div class="cert-top-title">✦ LE CONSEIL SUPRÊME DE GAÏA & DE L'ELFE RODOLPHE ✦</div>
+        <div class="cert-main-heading">Certificat de Sagesse Holistique</div>
+        
+        <div class="cert-attribution">Ce parchemin d'alignement élémentaire et de reconnexion est solennellement décerné à :</div>
+        <div class="cert-name" id="pdf-output-pseudo">L'Explorateur</div>
 
-    <div class="pdf-grid-stats">
-      <div class="pdf-col" style="text-align: center; border-right: 1px dashed #c9a84c;">
-        <span style="font-size:14px; text-transform:uppercase; letter-spacing:1px; color:#555;">Alignement Fréquentiel</span>
-        <div id="pdf-output-grade" style="font-family:'Cinzel Decorative'; font-size:18px; font-weight:bold; margin-top:8px; color:#1b331b;">[Grade]</div>
-        <div class="pdf-badge-round">
-          <span id="pdf-output-emoji" style="font-size:24px;">🌱</span>
-          <span id="pdf-output-score" style="font-size:14px; font-weight:bold; margin-top:2px;">0 pts</span>
+        <div class="cert-table-layout">
+            <div class="cert-table-cell">
+                <div class="cert-left-panel">
+                    <span class="cert-rank-title">Rang Éco-Spirituel Atteint</span>
+                    <div id="pdf-output-grade" class="cert-rank-value">Novice des Bois</div>
+                    <div class="cert-seal-circle">
+                        <div id="pdf-output-emoji" style="font-size:30px; padding-top:16px;">🌱</div>
+                        <div id="pdf-output-score" style="font-size:16px; font-weight:bold; margin-top:2px;">0 PTS</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="cert-table-cell">
+                <div class="cert-right-panel">
+                    <div class="cert-charter-title">📜 Alliances et Engagements Actés :</div>
+                    <div id="pdf-output-charte" class="cert-charter-list">
+                        - Aucun engagement enregistré sur le plan terrestre.
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      
-      <div class="pdf-col" style="padding-left:15px;">
-        <span style="font-size:13px; font-weight:bold; text-transform:uppercase; color:#4a7c59; display:block; margin-bottom:5px;">Charte Environnementale Validée :</span>
-        <div id="pdf-output-charte" style="font-size:13px; font-style:italic; color:#444; max-height:120px; overflow:hidden; line-height:1.4;">
-          - Aucune charte générée.
+
+        <div class="cert-quote-box">
+            <strong>🧝 Parole Sacrée de l'Elfe Rodolphe :</strong> <span id="pdf-output-rodolphe">« En attente de vos résultats. »</span>
         </div>
-      </div>
-    </div>
 
-    <div style="margin-top:25px; padding:15px; background:rgba(201,168,76,0.06); border-left:3px solid #4a7c59; font-style:italic; font-size:14px; color:#333;">
-      <strong>📜 Chronique de l'Elfe Rodolphe :</strong> <span id="pdf-output-rodolphe">« En attente de ton score. »</span>
+        <div class="cert-signatures">
+            <div style="float: left; width: 50%; color: #555; line-height: 1.4;">
+                Délivré par l'Oracle des Dimensions le <span id="pdf-output-date">--/--/----</span><br>
+                <strong>Authenticité : www.lesdimensionsdegaia.com</strong>
+            </div>
+            <div style="float: right; width: 50%; text-align: right; line-height: 1.4;">
+                <strong>Eddy Boussetta</strong><br>
+                <span style="font-size:12px; color:#666; font-style:italic;">Gardien Souverain des Portails de Gaïa</span>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
     </div>
-
-    <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:40px; font-size:12px; color:#666; border-top:1px solid rgba(0,0,0,0.1); padding-top:10px;">
-      <div>Généré via l'Oracle Holistique le <span id="pdf-output-date">--/--/----</span><br><strong>www.lesdimensionsdegaia.com</strong></div>
-      <div style="text-align:right;"><strong>Eddy Boussetta</strong><br><span style="font-size:11px; opacity:0.8;">Gardien des Dimensions de Gaïa</span></div>
-    </div>
-  </div>
 </div>
 
 <script>
 // ============================================================
-// AUDIO ARCHITECTURE (Sons SF / Synthétiques Modernes)
+// SYSTEME AUDIO SYNTHETIQUE (Sons SF & Musique Cristalline)
 // ============================================================
-let audioContext = null;
-let bgMusicNode = null;
+let audioCtx = null;
+let musiqueSource = null;
+let musiqueGainNode = null;
+let musiqueActive = false;
 
-function initAudio() {
-  if (!audioContext) {
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    demarrerMusiqueFond();
-  }
+function initialiserAudio() {
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
 }
 
-function demarrerMusiqueFond() {
-  try {
-    // Synthèse d'une nappe sonore évolutive Sci-Fi / Féérique en continu
-    const bufferSize = audioContext.sampleRate * 4; 
-    const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      data[i] = Math.sin(i * 0.005) * Math.sin(i * 0.0002) * 0.4;
-    }
+function basculerMusiqueDirecte() {
+    initialiserAudio();
+    const btn = document.getElementById('statut-musique');
     
-    const noise = audioContext.createBufferSource();
-    noise.buffer = buffer;
-    noise.loop = true;
-
-    const filter = audioContext.createBiquadFilter();
-    filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(450, audioContext.currentTime);
-
-    bgMusicNode = audioContext.createGain();
-    bgMusicNode.gain.setValueAtTime(0.12, audioContext.currentTime);
-
-    noise.connect(filter);
-    filter.connect(bgMusicNode);
-    bgMusicNode.connect(audioContext.destination);
-    noise.start();
-  } catch(e) { console.log("Audio bloqué ou non supporté"); }
+    if (!musiqueActive) {
+        try {
+            const dureeBuffer = audioCtx.sampleRate * 8; 
+            const buffer = audioCtx.createBuffer(1, dureeBuffer, audioCtx.sampleRate);
+            const canal = buffer.getChannelData(0);
+            
+            for (let i = 0; i < dureeBuffer; i++) {
+                const t = i / audioCtx.sampleRate;
+                const onde1 = Math.sin(2 * Math.PI * 220 * t); 
+                const onde2 = Math.sin(2 * Math.PI * 330 * t * (1 + 0.005 * Math.sin(2 * Math.PI * 0.5 * t))); 
+                const onde3 = Math.cos(2 * Math.PI * 440 * t); 
+                canal[i] = (onde1 + onde2 * 0.5 + onde3 * 0.3) * Math.sin(Math.PI * i / dureeBuffer) * 0.15;
+            }
+            
+            musiqueSource = audioCtx.createBufferSource();
+            musiqueSource.buffer = buffer;
+            musiqueSource.loop = true;
+            
+            const filtre = audioCtx.createBiquadFilter();
+            filtre.type = 'lowpass';
+            filtre.frequency.setValueAtTime(450, audioCtx.currentTime);
+            
+            musiqueGainNode = audioCtx.createGain();
+            musiqueGainNode.gain.setValueAtTime(0.25, audioCtx.currentTime);
+            
+            musiqueSource.connect(filtre);
+            filtre.connect(musiqueGainNode);
+            musiqueGainNode.connect(audioCtx.destination);
+            
+            musiqueSource.start(0);
+            musiqueActive = true;
+            btn.textContent = "🎵 Musique : Active ✨";
+            btn.classList.add('actif');
+        } catch (e) {
+            console.error("Erreur audio : ", e);
+        }
+    } else {
+        try {
+            musiqueSource.stop();
+            musiqueActive = false;
+            btn.textContent = "🎵 Musique : Désactivée";
+            btn.classList.remove('actif');
+        } catch(e) {}
+    }
 }
 
-function declencherSon(mode) {
-  if (!audioContext) return;
-  try {
-    const osc = audioContext.createOscillator();
-    const gain = audioContext.createGain();
-    osc.connect(gain); gain.connect(audioContext.destination);
+function jouerBruitageSF(type) {
+    if (!audioCtx) return;
+    try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
 
-    if (mode === 'correct') {
-      // Balayage ascendant laser harmonique Sci-Fi
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(300, audioContext.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(1400, audioContext.currentTime + 0.3);
-      gain.gain.setValueAtTime(0.15, audioContext.currentTime);
-      gain.gain.linearRampToValueAtTime(0.001, audioContext.currentTime + 0.35);
-      osc.start(); osc.stop(audioContext.currentTime + 0.35);
-    } else if (mode === 'faux') {
-      // Impulsion descendante cybernétique (échec interface)
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(180, audioContext.currentTime);
-      osc.frequency.linearRampToValueAtTime(60, audioContext.currentTime + 0.25);
-      gain.gain.setValueAtTime(0.2, audioContext.currentTime);
-      gain.gain.linearRampToValueAtTime(0.001, audioContext.currentTime + 0.28);
-      osc.start(); osc.stop(audioContext.currentTime + 0.28);
-    } else if (mode === 'click') {
-      // Clavier mécanique moderne bionique
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(600, audioContext.currentTime);
-      gain.gain.setValueAtTime(0.08, audioContext.currentTime);
-      gain.gain.linearRampToValueAtTime(0.001, audioContext.currentTime + 0.04);
-      osc.start(); osc.stop(audioContext.currentTime + 0.04);
+        if (type === 'correct') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); 
+            osc.frequency.exponentialRampToValueAtTime(1046.50, audioCtx.currentTime + 0.3); 
+            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+        } else if (type === 'faux') {
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+            osc.frequency.linearRampToValueAtTime(70, audioCtx.currentTime + 0.35);
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.35);
+        } else if (type === 'click') {
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 0.06);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.06);
+        }
+    } catch(e) {}
+}
+
+function faireParlerRodolphe(texte) {
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(texte);
+        utterance.lang = 'fr-FR';
+        utterance.pitch = 1.15;
+        utterance.rate = 0.95;
+        window.speechSynthesis.speak(utterance);
     }
-  } catch(e){}
 }
 
 // ============================================================
-// DONNÉES DU JEU
+// BASE DE DONNÉES DU JEU (15 QUESTIONS J1 / 10 J2 / 6 J3)
 // ============================================================
 const ESPRITS = {
-  fee: { nom: "Fée", emoji: "🧚" }, elfe: { nom: "Elfe", emoji: "🧝" },
-  lutin: { nom: "Lutin", emoji: "🍄" }, dragon: { nom: "Dragon", emoji: "🐉" },
-  licorne: { nom: "Licorne", emoji: "🦄" }, troll: { nom: "Troll", emoji: "🪨" },
-  phenix: { nom: "Phénix", emoji: "🔥" }, dryade: { nom: "Dryade", emoji: "🌳" },
-  dana: { nom: "Déesse Dana", emoji: "✨" }, deva: { nom: "Déva", emoji: "💖" }
+    fee: { nom: "Fée", emoji: "🧚" }, elfe: { nom: "Elfe", emoji: "🧝" },
+    lutin: { nom: "Lutin", emoji: "🍄" }, dragon: { nom: "Dragon", emoji: "🐉" },
+    licorne: { nom: "Licorne", emoji: "🦄" }, troll: { nom: "Troll", emoji: "🪨" },
+    phenix: { nom: "Phénix", emoji: "🔥" }, dryade: { nom: "Dryade", emoji: "🌳" },
+    dana: { nom: "Déesse Dana", emoji: "✨" }, deva: { nom: "Déva", emoji: "💖" }
 };
 
 const QUESTIONS_JEU1 = [
-  { phrase: "« Je me consume au zénith de mon âge pour renaître magnifié au milieu de mes propres braises refroidies. »", esprit: "phenix" },
-  { phrase: "« Mon essence vitale bat la mesure au sein du tronc d'un arbre souverain de la forêt d'Orient. »", esprit: "dryade" },
-  { phrase: "« Divinité mère, je dispense l'énergie matricielle et l'opulence sur les clans mythiques du Nord. »", esprit: "dana" },
-  { phrase: "« J'infuse la pure géométrie sacrée de la lumière pure au cœur des bourgeons printaniers. »", esprit: "fee" },
-  { phrase: "« Je transcris l'histoire universelle de la Terre à travers les architectures végétales séculaires. »", esprit: "elfe" }
+    {"phrase": "« Je consume mon enveloppe charnelle dans un brasier sacré pour renaître glorieux de mes propres cendres. »", "esprit": "phenix"},
+    {"phrase": "« Mon âme et ma force vitale sont intimement liées à un chêne majestueux au cœur de la forêt. »", "esprit": "dryade"},
+    {"phrase": "« Mère primordiale des Dieux Celtes, je déverse des fleuves d'abondance sur les terres sacrées. »", "esprit": "dana"},
+    {"phrase": "« Entité de pure lumière divine, j'agis comme l'architecte invisible de l'harmonie de la nature. »", "esprit": "deva"},
+    {"phrase": "« Je danse là où le soleil filtre entre les pétales et j'insuffle la magie au règne floral. »", "esprit": "fee"},
+    {"phrase": "« Je murmure aux arbres millénaires et je garde la mémoire linguistique des bois anciens. »", "esprit": "elfe"},
+    {"phrase": "« Petit peuple facétieux, j'adore cacher les objets des humains ou me percher sur les champignons. »", "esprit": "lutin"},
+    {"phrase": "« Grand reptile écailleux volant, je garde d'antiques trésors sacrés au fond de mes grottes. »", "esprit": "dragon"},
+    {"phrase": "« Noble équidé blanc argenté dont la corne magique a le pouvoir de purifier toutes les eaux. »", "esprit": "licorne"},
+    {"phrase": "« Créature massive de roche et de cavernes, je vis caché sous les ponts en attendant les voyageurs. »", "esprit": "troll"},
+    {"phrase": "« Oiseau de feu couronné d'or, mes larmes magiques ont le pouvoir de guérir toutes les blessures. »", "esprit": "phenix"},
+    {"phrase": "« Nymphe sauvage arboricole, je ne fais qu'un avec les lianes et la sève active des bois. »", "esprit": "dryade"},
+    {"phrase": "« Déesse matricielle suprême, j'accueille les âmes des guerriers sous mon aile de lumière. »", "esprit": "dana"},
+    {"phrase": "« Vibration harmonique céleste, je guide la croissance invisible des montagnes et des vallées. »", "esprit": "deva"},
+    {"phrase": "« Être d'une beauté diaphane, je guide les explorateurs perdus sur les sentiers secrets de Gaïa. »", "esprit": "elfe"}
 ];
 
-// 15 ÉNIGMES CORRIGÉES - SANS LE MOT DE LA RÉPONSE DANS LES INDICES
 const ENIGMES_JEU2 = [
-  { esprit: "phenix", indices: ["🎬 Compagnon ailé en feu du directeur de l'école des sorciers dans la saga à succès.", "✨ Mon cycle d'existence rejette la décomposition : je prends feu spontanément.", "❓ Oiseau mythologique couronné d'or dont les larmes possèdent un pouvoir régénérant absolu.", "🔥 Je sors grandi et purifié du tas de cendres issues de mon propre trépas."], r_valides: ["phenix", "phénix"] },
-  { esprit: "dryade", indices: ["🎬 protectrice sylvestre agile surgissant des bois sacrés dans les jeux de stratégie comme Warcraft.", "✨ Nymphe dont l'existence même dépend de la survie biologique d'un arbre hôte.", "❓ Si la hache entaille mon écorce sacrée, mon corps physique ressent instantanément la coupure.", "🌳 Entité fusionnée avec la sève, l'aubier et les ramifications forestières."], r_valides: ["dryade", "dryades"] },
-  { esprit: "dragon", indices: ["🎬 Bête majestueuse partageant son cœur immortel avec le jeune roi Édouard dans un chef-d'œuvre de 1996.", "✨ Reptile millénaire volant doué d'une sagesse immense et d'un amour pour les parchemins anciens.", "❓ Créature écailleuse quadrupède, emblème suprême des empereurs d'Asie et des guerriers celtes.", "🔥 Mon souffle libère un torrent de plasma thermique destructeur capable de faire fondre le granit."], r_valides: ["dragon", "dragons"] },
-  { esprit: "licorne", indices: ["🎬 Cible prioritaire du Seigneur des Ténèbres dans le conte cinématographique de Ridley Scott.", "✨ Mon appendice crânien hélicoidal capte les vibrations harmoniques cosmiques.", "❓ Noble équidé blanc argenté dont la corne purifie instantanément les eaux empoisonnées par les démons.", "🌈 Je ne consens à approcher et à m'endormir que devant les êtres doués d'une innocence absolue."], r_valides: ["licorne", "licornes"] },
-  { esprit: "elfe", indices: ["🎬 Représentant aux oreilles pointues maniant l'arc avec une vélocité surhumaine dans la trilogie de Peter Jackson.", "✨ Être anthropomorphe à la longévité de plusieurs siècles, maître des arts poétiques primitifs.", "❓ Je glisse à la surface de la neige sans jamais m'y enfoncer, léger comme un souffle d'étoile.", "🧝 Être d'une beauté diaphane issu des anciennes forêts nordiques."], r_valides: ["elfe", "elfes"] },
-  { esprit: "troll", indices: ["🎬 Créature massive des cavernes terrassée dans les toilettes de Poudlard au début de la scolarité du sorcier.", "✨ Force brute légendaire issue des paysages gelés et des fjords de Scandinavie.", "❓ Je passe mes journées dissimulé sous les ponts en bois à attendre que les voyageurs traversent.", "🪨 Ma peau épaisse est rugueuse comme de la roche brute recouverte de lichens sauvages."], r_valides: ["troll", "trolls"] },
-  { esprit: "lutin", indices: ["🎬 Petit gardien malicieux au chapeau vert possédant un chaudron d'or caché au pied des arcs-en-ciel.", "✨ Petit peuple facétieux qui adore intervertir les objets domestiques pour désorienter les humains.", "❓ Être de petite taille, agile, farceur et indissociable des légendes celtiques et bretonnes.", "🍄 J'adore me percher sur les chapeaux des champignons toxiques des sous-bois."], r_valides: ["lutin", "lutins"] },
-  { esprit: "fee", indices: ["🎬 Personnage miniature projetant une étincelante traînée de lumière à chaque battement d'ailes autour de Peter.", "✨ Entité féminine qui préside à la destinée des nouveau-nés en leur octroyant des dons magiques.", "❓ Créature gracieuse pourvue d'ailes de libellule, capable de manipuler la croissance végétale.", "✨ Je manie une baguette capable de matérialiser les rêves les plus enfouis."], r_valides: ["fee", "fée", "fées"] },
-  { esprit: "dana", indices: ["✨ Souveraine matricielle divine, souche fondatrice des anciens panthéons d'Irlande.", "✨ Mon nom désigne la lignée sacrée descendue des cieux sur les collines d'Érin.", "❓ Divinité suprême de l'abondance, du savoir mystique et des cours d'eau fertiles.", "✨ Grande déesse celte, mère nourricière de la Terre primordiale."], r_valides: ["dana", "deesse dana", "déesse dana"] },
-  { esprit: "deva", indices: ["✨ Entité de pure énergie lumineuse agissant comme l'architecte invisible de la nature.", "✨ Je n'ai pas de corps anthropomorphe, je suis une pure vibration harmonique.", "❓ Esprit subtil qui supervise l'évolution spirituelle de paysages entiers ou de chaînes de montagnes.", "💖 Concept oriental désignant les grands esprits directeurs de la création terrestre."], r_valides: ["deva", "devas"] },
-  { esprit: "dryade", indices: ["✨ Esprit qui souffre instantanément si une maladie attaque l'arbre dont je suis la conscience.", "✨ Gardienne des secrets de la sève et des nœuds de bois sacrés.", "❓ Mon apparence féminine se compose de branches flexibles et d'écorces souples.", "🌳 Je fusionne mon existence avec la physiologie d'un chêne ou d'un hêtre."], r_valides: ["dryade", "dryades"] },
-  { esprit: "phenix", indices: ["✨ Symbole universel du renouveau alchimique et de la transmutation par le feu.", "✨ Mon chant est si pur qu'il apaise instantanément le cœur des guerriers les plus belliqueux.", "❓ Animal sacré d'Orient volant au-dessus des empereurs pour valider leur règne de justice.", "🔥 L'oiseau de feu qui transcende le concept même du trépas."], r_valides: ["phenix", "phénix"] },
-  { esprit: "licorne", indices: ["✨ Créature dont l'unique corne est l'antenne magique la plus recherchée par les alchimistes noirs.", "✨ Emblème héraldique de pureté sur les tapisseries médiévales de la dame au lion.", "❓ Animal chimérique associant le corps d'un cheval, les sabots d'une chèvre et une barbe de bouc.", "🦄 Symbole ultime de la lumière divine indomptable."], r_valides: ["licorne", "licornes"] },
-  { esprit: "elfe", indices: ["✨ Peuple d'une noblesse absolue ayant choisi de quitter le plan matériel pour rejoindre les havres gris.", "✨ Maîtres de la forge des anneaux de pouvoir et de la diplomatie interstellaire.", "❓ Mes yeux brillent d'un éclat stellaire car j'ai contemplé la lumière du premier matin du monde.", "🧝 Être noble aux oreilles effilées, éternellement jeune."], r_valides: ["elfe", "elfes"] },
-  { esprit: "dragon", indices: ["✨ Gardien immémorial des lignes telluriques de force qui ceinturent le globe terrestre.", "✨ On m'associe aux orages, aux raz-de-marée en Orient et aux brasiers souterrains en Occident.", "❓ Léviathan écailleux dont le regard hypnotique paralyse les armées entières.", "🐉 Grand reptile ailé cracheur de feu."], r_valides: ["dragon", "dragons"] }
+    { esprit: "phenix", indices: ["🎬 Compagnon de flammes de Dumbledore dans Harry Potter.", "✨ Mon corps se consume entièrement quand je me sens vieillir.", "❓ Oiseau légendaire dont les larmes ont un pouvoir de guérison absolu.", "🔥 Je ressuscite majestueusement du milieu de mes propres cendres."], r_valides: ["phenix", "phénix"] },
+    { esprit: "dryade", indices: ["🎬 Créature des bois protégeant l'arbre-monde dans l'univers de Warcraft.", "✨ Je suis une nymphe dont le destin est indissociable d'un arbre.", "❓ Si quelqu'un abat mon chêne sacré, je meurs à l'instant même.", "🌳 Conscience féminine de la forêt, faite d'écorce et de sève."], r_valides: ["dryade", "dryades"] },
+    { esprit: "dragon", indices: ["🎬 Créature ancienne qui garde la montagne solitaire dans Le Hobbit.", "✨ Reptile volant de grande taille doté d'une parole hypnotique.", "❓ Symbole de pouvoir impérial et de lignes telluriques en Asie.", "🔥 Créature à écailles capable de cracher des torrents de feu."], r_valides: ["dragon", "dragons"] },
+    { esprit: "licorne", indices: ["🎬 Animal pur traqué pour son sang argenté dans le premier Harry Potter.", "✨ Mon unique corne au milieu du front possède des vertus purificatrices.", "❓ Splendide cheval blanc aux sabots fendus impossible à capturer.", "🦄 Symbole médiéval de chasteté, d'innocence et de haute vibration."], r_valides: ["licorne", "licornes"] },
+    { esprit: "elfe", indices: ["🎬 Archer immortel aux yeux perçants nommé Legolas.", "✨ Peuple divin et d'une grande noblesse, amoureux de la musique et des étoiles.", "❓ Mes oreilles sont finement pointues et je marche sans laisser de trace.", "🧝 Gardien millénaire des grands secrets linguistiques de Gaïa."], r_valides: ["elfe", "elfes"] },
+    { esprit: "troll", indices: ["🎬 Monstre de pierre piégé sous la lumière du soleil dans Bilbo le Hobbit.", "✨ Je déteste les bruits et je vis à l'écart de toute civilisation.", "❓ Force brute des cavernes qui adore tendre des pièges sous les ponts.", "🪨 Créature scandinave à la peau épaisse semblable à de la roche."], r_valides: ["troll", "trolls"] },
+    { esprit: "lutin", indices: ["🎬 Farceur celte qui cache son pot d'or au pied de l'arc-en-ciel.", "✨ Je fais partie du petit peuple et j'adore taquiner les humains chez eux.", "❓ Créature facétieuse de petite taille très présente dans les contes bretons.", "🍄 Mon refuge préféré est le dessous des grands champignons des bois."], r_valides: ["lutin", "lutins"] },
+    { esprit: "fee", indices: ["🎬 Personnage de petite taille doté d'ailes qui accompagne Peter Pan.", "✨ Être de lumière qui accorde de merveilleux dons au berceau des princesses.", "❓ Je possède une baguette capable d'accomplir des miracles instantanés.", "🧚 Créature ailée minuscule qui veille sur la beauté des fleurs."], r_valides: ["fee", "fée"] },
+    { esprit: "dana", indices: ["✨ Déesse originelle suprême, mère des grands dieux d'Irlande.", "✨ La tribu mythique des Tuatha Dé Danann porte mon nom sacré.", "❓ Divinité de l'eau, de la fertilité spirituelle et de l'abondance.", "✨ Matrice universelle de la mythologie celte."], r_valides: ["dana", "deesse dana", "déesse dana"] },
+    { esprit: "deva", indices: ["✨ Grand architecte invisible et éthérique de la géométrie de la nature.", "✨ Je n'ai pas de forme physique, je suis une pure vibration d'amour.", "❓ Conscience supérieure qui guide l'harmonie des écosystèmes et des jardins.", "💖 Terme sacré oriental pour désigner les grands esprits de lumière."], r_valides: ["deva", "devas"] }
 ];
 
-// JEU 3 — LES 8 ÉTAPES DU RITUEL DE LA CHARTE ECO-SPIRITUELLE
 const QUESTIONS_JEU3 = [
-  "Étape 1 : Comment vous engagez-vous à honorer et protéger l'Eau douce (rivières, sources) dans votre quotidien ?",
-  "Étape 2 : Quelle action concrète choisissez-vous pour préserver l'Air (limiter la pollution, planter des arbres oxygénants) ?",
-  "Étape 3 : De quelle manière allez-vous respecter le règne Végétal (arbres anciens, plantes sauvages) cette semaine ?",
-  "Étape 4 : Quel geste fort décidez-vous pour soutenir le règne Animal (oiseaux, insectes pollinisateurs) ?",
-  "Étape 5 : Comment comptez-vous purifier votre propre Terre intérieure (alimentation bio, pensées bienveillantes) ?",
-  "Étape 6 : Quelle habitude de consommation polluante vous engagez-vous à transmuter ou éliminer définitivement ?",
-  "Étape 7 : Par quel moyen allez-vous transmettre ou partager la sagesse de Gaïa autour de vous ?",
-  "Étape 8 : Énoncez votre grand vœu final de fidélité et d'amour inconditionnel envers notre planète Mère."
+    "Étape 1 : Comment allez-vous honorer et préserver l'Eau douce dans votre quotidien ?",
+    "Étape 2 : Quelle action simple choisissez-vous pour limiter la pollution de l'Air ?",
+    "Étape 3 : De quelle manière allez-vous respecter le règne Végétal cette semaine ?",
+    "Étape 4 : Quel geste concret décidez-vous pour soutenir le bien-être Animal autour de vous ?",
+    "Étape 5 : Comment comptez-vous purifier votre propre corps et vos pensées (votre Terre intérieure) ?",
+    "Étape 6 : Quelle habitude polluante vous engagez-vous à supprimer définitivement ?"
 ];
 
 const GRADES = [
-  { min: 0, max: 40, nom: "Initié Virtuel", emoji: "🌱" },
-  { min: 41, max: 90, nom: "Éclaireur des Lignes Telluriques", emoji: "🌍" },
-  { min: 91, max: 140, nom: "Ambassadeur Spécial de Rodolphe", emoji: "🧝" },
-  { min: 141, max: Infinity, nom: "Grand Archonte de l'Ordre de Gaïa", emoji: "👑" }
+    { min: 0, max: 60, nom: "Initié Virtuel", emoji: "🌱" },
+    { min: 61, max: 120, nom: "Gardien des Lignes Telluriques", emoji: "🌍" },
+    { min: 121, max: 170, nom: "Ambassadeur de l'Elfe Rodolphe", emoji: "🧝" },
+    { min: 171, max: Infinity, nom: "Maître Archonte de Gaïa", emoji: "👑" }
 ];
 
-let score = 0;
-let pseudo = "Explorateur";
-let j1_index = 0;
-let j2_index = 0;
-let j2_indice_actuel = 0;
-let j3_index = 0;
-let j3_reponses = [];
+let score = 0; let pseudo = "Explorateur";
+let j1_index = 0; let j2_index = 0; let j2_indice_actuel = 0;
+let j3_index = 0; let j3_reponses = [];
 
 function obtenirGradeActuel() { return GRADES.find(g => score >= g.min && score <= g.max) || GRADES[0]; }
 
 function synchroniserUI(etapeLabel) {
-  document.getElementById('ui-score').textContent = score;
-  document.getElementById('ui-pseudo').textContent = pseudo;
-  document.getElementById('ui-progression').textContent = etapeLabel;
-  const g = obtenirGradeActuel();
-  document.getElementById('ui-grade').textContent = `${g.emoji} ${g.nom}`;
+    document.getElementById('ui-score').textContent = score;
+    document.getElementById('ui-pseudo').textContent = pseudo;
+    document.getElementById('ui-progression').textContent = etapeLabel;
+    const g = obtenirGradeActuel();
+    document.getElementById('ui-grade').textContent = `${g.emoji} ${g.nom}`;
 }
 
 function afficherEcran(ecran) {
-  declencherSon('click');
-  document.querySelectorAll('.btn-nav').forEach(b => b.classList.remove('actif'));
-  document.getElementById('btn-' + ecran)?.classList.add('actif');
-  if (ecran === 'accueil') afficherAccueil();
-  else if (ecran === 'resultats') calculerFin();
+    jouerBruitageSF('click');
+    document.querySelectorAll('.btn-nav').forEach(b => b.classList.remove('actif'));
+    document.getElementById('btn-' + ecran)?.classList.add('actif');
+    if (ecran === 'accueil') afficherAccueil();
+    else if (ecran === 'resultats') calculerFin();
 }
 
 // ============================================================
-// ÉCRAN 1 : ACCUEIL & ENREGISTREMENT
+// CONTRÔLEURS DE FLUX ET ÉCRANS
 // ============================================================
 function afficherAccueil() {
-  synchroniserUI("Configuration");
-  document.getElementById('zone-principale').innerHTML = `
-    <div style="text-align:center;">
-      <div class="compagnon-box">
-        <strong>🧝 L'Elfe Rodolphe :</strong> « Salutations, voyageur des temps modernes. Je suis Rodolphe, ton instructeur sur ce sentier. Écoute bien mon conseil : <strong>Chaque indice demandé au Jeu 2 réduit la valeur de la question (10, puis 7, 5 et 3 points maximum)</strong> ! Renseigne ton matricule vibratoire ci-dessous pour lancer l'éveil automatique de l'interface. »
-      </div>
-      <div style="margin:20px 0; text-align:left;">
-        <label style="font-family:'Cinzel Decorative'; font-size:12px; color:var(--or); display:block; margin-bottom:6px;">✦ Saisissez votre Pseudo / Identifiant :</label>
-        <input type="text" id="pseudo-input" class="input-reponse" value="${pseudo === 'Explorateur' ? '' : pseudo}" placeholder="Ex: Sacha_L_Éveillé..." style="width:100%;">
-      </div>
-      <button class="btn-action btn-principal" onclick="validerAccueil()">⚡ Synchroniser & Lancer le Jeu 1</button>
-    </div>
-  `;
+    synchroniserUI("Bienvenue");
+    document.getElementById('zone-principale').innerHTML = `
+        <div style="text-align:center;">
+            <div class="compagnon-box">
+                <strong>🧝 L'Elfe Rodolphe :</strong> « Bienvenue dans notre sanctuaire ! Activez la musique en haut à droite si vous le souhaitez. Je vais vous guider à travers les trois épreuves. Entrez votre nom d'explorateur pour commencer le voyage ! »
+            </div>
+            <div style="margin:20px 0; text-align:left;">
+                <label style="font-family:'Cinzel Decorative'; font-size:12px; color:var(--or); display:block; margin-bottom:6px;">✦ Saisissez votre Pseudo d'Aventurier :</label>
+                <input type="text" id="pseudo-input" class="input-reponse" value="${pseudo === 'Explorateur' ? '' : pseudo}" placeholder="Ex: CédricLeDryade..." style="width:100%;">
+            </div>
+            <button class="btn-action btn-principal" onclick="validerAccueil()">🌿 Éveiller le Portail Sacré</button>
+        </div>
+    `;
+    setTimeout(() => {
+        faireParlerRodolphe("Bienvenue dans les Dimensions de Gaïa ! Je suis Rodolphe, ton guide. Active la musique en haut à droite si tu le souhaites, et entre ton pseudo pour commencer.");
+    }, 500);
 }
 
 function validerAccueil() {
-  const input = document.getElementById('pseudo-input').value.trim();
-  if (input) pseudo = input;
-  initAudio(); // Déclenchement impératif de la musique suite au clic utilisateur
-  lancerJeu1();
+    initialiserAudio();
+    const input = document.getElementById('pseudo-input').value.trim();
+    if (input) pseudo = input;
+    lancerJeu1();
 }
 
-// ============================================================
-// JEU 1 : LA VOIX DE LA NATURE
-// ============================================================
 function lancerJeu1() {
-  document.querySelectorAll('.btn-nav').forEach(b => b.classList.remove('actif'));
-  document.getElementById('btn-jeu1').classList.add('actif');
-  j1_index = 0;
-  afficherQ1();
+    document.querySelectorAll('.btn-nav').forEach(b => b.classList.remove('actif'));
+    document.getElementById('btn-jeu1').classList.add('actif');
+    j1_index = 0;
+    faireParlerRodolphe("Première épreuve : Écoute les voix des esprits de la nature et devine qui parle.");
+    afficherQ1();
 }
 
 function afficherQ1() {
-  if (j1_index >= QUESTIONS_JEU1.length) {
-    document.getElementById('zone-principale').innerHTML = `
-      <div style="text-align:center;">
-        <h2>🌿 Épreuve 1 Validée !</h2>
-        <div class="compagnon-box"><strong>🧝 Rodolphe :</strong> « Bonnes intuitions. Mais le portail des Énigmes Sans Nom va requérir toute ta logique pure. Avance ! »</div>
-        <button class="btn-action btn-principal" onclick="lancerJeu2()">🎬 Ouvrir le Portail 2</button>
-      </div>
-    `;
-    return;
-  }
-  synchroniserUI(`J1 : ${j1_index+1}/${QUESTIONS_JEU1.length}`);
-  const q = QUESTIONS_JEU1[j1_index];
-  const faux = melangerArray(Object.keys(ESPRITS).filter(k => k !== q.esprit)).slice(0, 3);
-  const choix = melangerArray([q.esprit, ...faux]);
+    if (j1_index >= QUESTIONS_JEU1.length) {
+        document.getElementById('zone-principale').innerHTML = `
+            <div style="text-align:center;">
+                <h2>🌿 Premier Portail Franchi !</h2>
+                <div class="compagnon-box"><strong>🧝 Rodolphe :</strong> « Incroyable intuition ! Tu as décodé toutes les vibrations. Passons à la suite. »</div>
+                <button class="btn-action btn-principal" onclick="lancerJeu2()">🎬 Ouvrir le Jeu 2</button>
+            </div>
+        `;
+        faireParlerRodolphe("Incroyable intuition ! Premier portail franchi. Passons au deuxième jeu.");
+        return;
+    }
+    synchroniserUI(`J1 : ${j1_index+1}/${QUESTIONS_JEU1.length}`);
+    const q = QUESTIONS_JEU1[j1_index];
+    const faux = melangerArray(Object.keys(ESPRITS).filter(k => k !== q.esprit)).slice(0, 3);
+    const choix = melangerArray([q.esprit, ...faux]);
 
-  document.getElementById('zone-principale').innerHTML = `
-    <h2 class="titre-jeu">🌿 Épreuve 1 — Identification Fréquentielle</h2>
-    <div class="barre-progression"><div class="progression-remplie" style="width:${(j1_index/QUESTIONS_JEU1.length)*100}%"></div></div>
-    <div class="carte-question"><p style="font-size:20px; font-style:italic;">${q.phrase}</p></div>
-    <div id="fb1" class="feedback"></div>
-    <div class="grille-reponses">
-      ${choix.map(k => `<button class="btn-reponse" id="opt-${k}" onclick="verifierQ1('${k}','${q.esprit}')">${ESPRITS[k].emoji} ${ESPRITS[k].nom}</button>`).join('')}
-    </div>
-    <div id="action-j1" style="display:none; text-align:center;"><button class="btn-action btn-principal" onclick="j1_index++; afficherQ1();">Étape Suivante →</button></div>
-  `;
+    document.getElementById('zone-principale').innerHTML = `
+        <h2 class="titre-jeu">🌿 Jeu 1 — La Voix des Esprits de la Nature</h2>
+        <div class="barre-progression"><div class="progression-remplie" style="width:${(j1_index/QUESTIONS_JEU1.length)*100}%"></div></div>
+        <div class="carte-question"><p style="font-size:20px; font-style:italic;">${q.phrase}</p></div>
+        <div id="fb1" class="feedback"></div>
+        <div class="grille-reponses">
+            ${choix.map(k => `<button class="btn-reponse" id="opt-${k}" onclick="verifierQ1('${k}','${q.esprit}')">${ESPRITS[k].emoji} ${ESPRITS[k].nom}</button>`).join('')}
+        </div>
+        <div id="action-j1" style="display:none; text-align:center;"><button class="btn-action btn-principal" onclick="j1_index++; afficherQ1();">Question Suivante →</button></div>
+    `;
 }
 
 function verifierQ1(choix, correct) {
-  document.querySelectorAll('.grille-reponses button').forEach(b => b.disabled = true);
-  document.getElementById('opt-' + correct).classList.add('correct');
-  const fb = document.getElementById('fb1');
-  fb.style.display = 'block';
-  if (choix === correct) {
-    declencherSon('correct'); score += 10; synchroniserUI(`J1 : ${j1_index+1}/${QUESTIONS_JEU1.length}`);
-    fb.className = "feedback correct"; fb.innerHTML = "🎯 Connexion établie. +10 points de puissance intégrés.";
-  } else {
-    declencherSon('faux'); document.getElementById('opt-' + choix)?.classList.add('faux');
-    fb.className = "feedback faux"; fb.innerHTML = `⚠️ Écart harmonique. Rodolphe décode qu'il s'agissait du/de la : <strong>${ESPRITS[correct].nom}</strong>.`;
-  }
-  document.getElementById('action-j1').style.display = 'block';
+    document.querySelectorAll('.grille-reponses button').forEach(b => b.disabled = true);
+    document.getElementById('opt-' + correct).classList.add('correct');
+    const fb = document.getElementById('fb1'); fb.style.display = 'block';
+    
+    if (choix === correct) {
+        jouerBruitageSF('correct'); score += 10;
+        fb.className = "feedback correct"; fb.innerHTML = "✨ Alignement parfait ! +10 points.";
+    } else {
+        jouerBruitageSF('faux'); document.getElementById('opt-' + choix)?.classList.add('faux');
+        fb.className = "feedback faux"; fb.innerHTML = `⚠️ Écart de fréquence. C'était : <strong>${ESPRITS[correct].nom}</strong>.`;
+    }
+    synchroniserUI(`J1 : ${j1_index+1}/${QUESTIONS_JEU1.length}`);
+    document.getElementById('action-j1').style.display = 'block';
 }
 
-// ============================================================
-// JEU 2 : L'ÉNIGME SANS NOM CORRIGÉE (15 QUESTIONS)
-// ============================================================
 function lancerJeu2() {
-  document.querySelectorAll('.btn-nav').forEach(b => b.classList.remove('actif'));
-  document.getElementById('btn-jeu2').classList.add('actif');
-  j2_index = 0; j2_indice_actuel = 0;
-  afficherQ2();
+    document.querySelectorAll('.btn-nav').forEach(b => b.classList.remove('actif'));
+    document.getElementById('btn-jeu2').classList.add('actif');
+    j2_index = 0; j2_indice_actuel = 0;
+    faireParlerRodolphe("Deuxième épreuve : Découvre l'identité de l'esprit caché derrière les énigmes.");
+    afficherQ2();
 }
 
 function afficherQ2() {
-  if (j2_index >= ENIGMES_JEU2.length) {
-    document.getElementById('zone-principale').innerHTML = `
-      <div style="text-align:center;">
-        <h2>🎬 Épreuve 2 Clôturée !</h2>
-        <div class="compagnon-box"><strong>🧝 Rodolphe :</strong> « Ton esprit analytique est impressionnant. Finalisons ton apprentissage par la formalisation de ton alliance éco-citoyenne. »</div>
-        <button class="btn-action btn-principal" onclick="lancerJeu3()">📝 Rédiger la Charte (Jeu 3)</button>
-      </div>
-    `;
-    return;
-  }
-  synchroniserUI(`J2 : ${j2_index+1}/${ENIGMES_JEU2.length}`);
-  const en = ENIGMES_JEU2[j2_index];
-  const tabPoints = [10, 7, 5, 3];
-  const ptsActuels = tabPoints[Math.min(j2_indice_actuel, 3)];
+    if (j2_index >= ENIGMES_JEU2.length) {
+        document.getElementById('zone-principale').innerHTML = `
+            <div style="text-align:center;">
+                <h2>🎬 Deuxième Épreuve Validée !</h2>
+                <div class="compagnon-box"><strong>🧝 Rodolphe :</strong> « Merveilleux ! Ton esprit est affûté. Passons au choix de tes engagements sacrés. »</div>
+                <button class="btn-action btn-principal" onclick="lancerJeu3()">📝 Ouvrir le Jeu 3</button>
+            </div>
+        `;
+        faireParlerRodolphe("Merveilleux ! Épreuve validée. Passons maintenant à tes engagements sacrés.");
+        return;
+    }
+    synchroniserUI(`J2 : ${j2_index+1}/${ENIGMES_JEU2.length}`);
+    const en = ENIGMES_JEU2[j2_index];
+    const ptsTableau = [10, 7, 5, 3];
+    const pointsPossibles = ptsTableau[Math.min(j2_indice_actuel, 3)];
 
-  document.getElementById('zone-principale').innerHTML = `
-    <h2 class="titre-jeu">🎬 Épreuve 2 — Les Énigmes de Cryptage Cyber-Sylvestre</h2>
+    document.getElementById('zone-principale').innerHTML = `
+    <h2 class="titre-jeu">🎬 Jeu 2 — L'Énigme des Indices Lumineux</h2>
     <div class="barre-progression"><div class="progression-remplie" style="width:${(j2_index/ENIGMES_JEU2.length)*100}%"></div></div>
-    <div style="text-align:center; margin-bottom:15px; color:var(--or-clair);">Valider maintenant garantit : <strong style="color:var(--neon-bleu)">${ptsActuels} points</strong></div>
+    <div style="text-align:center; margin-bottom:15px; color:var(--or-clair); font-size:16px;">Valeur de la réponse actuelle : <strong style="color:var(--neon-bleu)">${pointsPossibles} pts</strong></div>
     <div id="fb2" class="feedback"></div>
-    <div id="indices-container">
-      ${en.indices.slice(0, j2_indice_actuel + 1).map((ind, i) => `
-        <div class="carte-indice"><strong>Indice Décodé ${i+1} :</strong> ${ind}</div>
-      `).join('')}
+    <div id="indices-box">
+        ${en.indices.slice(0, j2_indice_actuel + 1).map((textIndice, idx) => `
+            <div class="carte-indice">🌟 <strong>Indice Dévoilé ${idx+1} :</strong> ${textIndice}</div>
+        `).join('')}
     </div>
     <div class="zone-saisie" id="saisie-box-j2">
-      <input type="text" class="input-reponse" id="input-answer-j2" placeholder="Saisissez l'esprit secret..." onkeydown="if(event.key==='Enter') verifierQ2()">
-      <button class="btn-action btn-principal" onclick="verifierQ2()">Soumettre</button>
-      ${j2_indice_actuel < en.indices.length - 1 ? `<button class="btn-action btn-secondaire" onclick="revelerIndiceSuivant()">Demander un Indice Suivant</button>` : ''}
+        <input type="text" class="input-reponse" id="input-answer-j2" placeholder="Saisissez le nom de la créature..." onkeydown="if(event.key==='Enter') verifierQ2()">
+        <br>
+        <button class="btn-action btn-principal" onclick="verifierQ2()">Soumettre la Réponse</button>
+        ${j2_indice_actuel < en.indices.length - 1 ? `<button class="btn-action btn-secondaire" onclick="j2_indice_actuel++; jouerBruitageSF('click'); afficherQ2();">👁️ Révéler un Indice (- de points)</button>` : ''}
     </div>
-  `;
-}
-
-// FONCTION INDICE RÉPARÉE ET OPÉRATIONNELLE
-function revelerIndiceSuivant() {
-  j2_indice_actuel++;
-  declencherSon('click');
-  afficherQ2();
+    `;
 }
 
 function verifierQ2() {
-  const userText = document.getElementById('input-answer-j2').value.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  if (!userText) return;
-  
-  const en = ENIGMES_JEU2[j2_index];
-  const tabPoints = [10, 7, 5, 3];
-  const ptsGagnes = tabPoints[Math.min(j2_indice_actuel, 3)];
-  
-  const validation = en.r_valides.map(r => r.normalize('NFD').replace(/[\u0300-\u036f]/g, '')).some(r => userText.includes(r) || r.includes(userText));
-  document.getElementById('saisie-box-j2').querySelectorAll('button').forEach(b => b.disabled = true);
-  
-  const fb = document.getElementById('fb2');
-  fb.style.display = 'block';
-  
-  if (validation) {
-    declencherSon('correct'); score += ptsGagnes; synchroniserUI(`J2 : ${j2_index+1}/${ENIGMES_JEU2.length}`);
-    fb.className = "feedback correct"; fb.innerHTML = `✨ Décryptage réussi ! C'était bien le/la <strong>${ESPRITS[en.esprit].nom}</strong>. +${ptsGagnes} points ajoutés.`;
-  } else {
-    declencherSon('faux'); fb.className = "feedback faux"; fb.innerHTML = `⚠️ Erreur de signature. La réponse sécurisée était : <strong>${ESPRITS[en.esprit].nom}</strong>.`;
-  }
+    const inputVal = document.getElementById('input-answer-j2').value.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    if (!inputVal) return;
 
-  j2_index++; j2_indice_actuel = 0;
-  setTimeout(() => {
-    const nextDiv = document.createElement('div'); nextDiv.className = 'zone-boutons';
-    nextDiv.innerHTML = `<button class="btn-action btn-principal" onclick="afficherQ2()">Énigme Suivante →</button>`;
-    document.getElementById('saisie-box-j2').after(nextDiv);
-  }, 400);
+    const en = ENIGMES_JEU2[j2_index];
+    const ptsTableau = [10, 7, 5, 3];
+    const pointsGagnes = ptsTableau[Math.min(j2_indice_actuel, 3)];
+
+    const estCorrect = en.r_valides.map(r => r.normalize('NFD').replace(/[\u0300-\u036f]/g, '')).some(r => inputVal.includes(r) || r.includes(inputVal));
+    document.getElementById('saisie-box-j2').querySelectorAll('button').forEach(b => b.disabled = true);
+    
+    const fb = document.getElementById('fb2'); fb.style.display = 'block';
+
+    if (estCorrect) {
+        jouerBruitageSF('correct'); score += pointsGagnes;
+        fb.className = "feedback correct"; fb.innerHTML = `✨ Excellente déduction ! C'était bien le/la <strong>${ESPRITS[en.esprit].nom}</strong>. (+${pointsGagnes} pts)`;
+    } else {
+        jouerBruitageSF('faux');
+        fb.className = "feedback faux"; fb.innerHTML = `⚠️ Esprit non reconnu. La réponse était : <strong>${ESPRITS[en.esprit].nom}</strong>.`;
+    }
+
+    synchroniserUI(`J2 : ${j2_index+1}/${ENIGMES_JEU2.length}`);
+    j2_index++; j2_indice_actuel = 0;
+    setTimeout(() => {
+        const divNext = document.createElement('div');
+        divNext.innerHTML = `<button class="btn-action btn-principal" onclick="afficherQ2()">Énigme Suivante →</button>`;
+        document.getElementById('saisie-box-j2').after(divNext);
+    }, 400);
 }
 
-// ============================================================
-// JEU 3 : RITUEL CHARTE ÉCO-SPIRITUELLE (8 QUESTIONS)
-// ============================================================
 function lancerJeu3() {
-  document.querySelectorAll('.btn-nav').forEach(b => b.classList.remove('actif'));
-  document.getElementById('btn-jeu3').classList.add('actif');
-  j3_index = 0; j3_reponses = [];
-  afficherQ3();
+    document.querySelectorAll('.btn-nav').forEach(b => b.classList.remove('actif'));
+    document.getElementById('btn-jeu3').classList.add('actif');
+    j3_index = 0; j3_reponses = [];
+    faireParlerRodolphe("Troisième épreuve : Rédige ton alliance avec la terre en validant chaque étape.");
+    afficherQ3();
 }
 
 function afficherQ3() {
-  if (j3_index >= QUESTIONS_JEU3.length) {
-    score += 10; // +10 points Bonus à la fin de la charte complète
-    synchroniserUI("Rituel Fini");
+    if (j3_index >= QUESTIONS_JEU3.length) {
+        score += 20; synchroniserUI("Pacte Acté");
+        document.getElementById('zone-principale').innerHTML = `
+            <div style="text-align:center;">
+                <h2>📝 Alliance Scellée avec la Terre Mère !</h2>
+                <div class="compagnon-box"><strong>🧝 Rodolphe :</strong> « Merveilleux ! Vos engagements écologiques ont été enregistrés. Un bonus de +20 points vous est octroyé. Découvrons votre parchemin final ! »</div>
+                <button class="btn-action btn-principal" onclick="calculerFin()">🏆 Consulter le Bilan Final</button>
+            </div>
+        `;
+        faireParlerRodolphe("Félicitations ! Tes engagements sont pris. Découvrons ton parchemin final.");
+        return;
+    }
+    synchroniserUI(`J3 : ${j3_index+1}/${QUESTIONS_JEU3.length}`);
     document.getElementById('zone-principale').innerHTML = `
-      <div style="text-align:center;">
-        <h2>📝 Charte Spirituelle Établie !</h2>
-        <div class="compagnon-box"><strong>🧝 Rodolphe :</strong> « Ta charte environnementale est gravée dans la base de données. Ton bonus honorifique de +10 points est validé. Consultons ton bilan final. »</div>
-        <button class="btn-action btn-principal" onclick="calculerFin()">🏆 Éditer le Certificat Final</button>
-      </div>
+        <h2 class="titre-jeu">📝 Jeu 3 — La Charte Éco-Spirituelle de Gaïa</h2>
+        <div class="barre-progression"><div class="progression-remplie" style="width:${(j3_index/QUESTIONS_JEU3.length)*100}%"></div></div>
+        <div class="carte-question"><p style="font-size:19px; font-style:italic; color:var(--or-clair);">${QUESTIONS_JEU3[j3_index]}</p></div>
+        <div style="margin-top:10px; text-align:center;">
+            <textarea id="input-j3" class="input-reponse" style="width:90%; min-height:90px; resize:none; font-family:serif; padding:12px; font-size:16px;" placeholder="Exprimez votre engagement sincère ici..."></textarea>
+        </div>
+        <div style="text-align:center; margin-top:15px;">
+            <button class="btn-action btn-principal" onclick="validerEtapeJ3()">Enregistrer cet engagement</button>
+        </div>
     `;
-    return;
-  }
-  synchroniserUI(`J3 : ${j3_index+1}/${QUESTIONS_JEU3.length}`);
-  document.getElementById('zone-principale').innerHTML = `
-    <h2 class="titre-jeu">📝 Épreuve 3 — Rédaction des 8 Alliances Planétaires</h2>
-    <div class="barre-progression"><div class="progression-remplie" style="width:${(j3_index/QUESTIONS_JEU3.length)*100}%"></div></div>
-    <div class="carte-question"><p style="font-size:18px; font-style:italic; color:var(--or-clair);">${QUESTIONS_JEU3[j3_index]}</p></div>
-    <div style="margin-top:10px;">
-      <textarea id="input-j3" class="input-reponse" style="width:100%; min-height:80px; resize:none;" placeholder="Rédigez votre promesse concrète..."></textarea>
-    </div>
-    <div class="zone-boutons" style="margin-top:15px;">
-      <button class="btn-action btn-principal" onclick="enregistrerEtapeJ3()">Enregistrer cette promesse</button>
-    </div>
-  `;
 }
 
-function enregistrerEtapeJ3() {
-  const text = document.getElementById('input-j3').value.trim();
-  if (text.length < 5) { alert("Rodolphe exige un engagement réel et rédigé avant d'avancer."); return; }
-  j3_reponses.push(text);
-  j3_index++;
-  declencherSon('correct');
-  afficherQ3();
+function validerEtapeJ3() {
+    const txt = document.getElementById('input-j3').value.trim();
+    if (txt.length < 5) { alert("Veuillez écrire un engagement de quelques mots pour honorer Gaïa."); return; }
+    j3_reponses.push(txt); j3_index++;
+    jouerBruitageSF('correct');
+    afficherQ3();
 }
 
-// ============================================================
-// CALCULATEUR FINAL & EXPORTATION PARCHEMIN PREMIUM
-// ============================================================
 function calculerFin() {
-  document.querySelectorAll('.btn-nav').forEach(b => b.classList.remove('actif'));
-  document.getElementById('btn-resultats').classList.add('actif');
-  synchroniserUI("Bilan");
-  const grade = obtenirGradeActuel();
+    document.querySelectorAll('.btn-nav').forEach(b => b.classList.remove('actif'));
+    document.getElementById('btn-resultats').classList.add('actif');
+    synchroniserUI("Bilan");
+    const grade = obtenirGradeActuel();
 
-  document.getElementById('zone-principale').innerHTML = `
-    <div class="ecran-resultats">
-      <h2>Initialisation du Bilan Suprême</h2>
-      <div class="separator"></div>
-      <p style="font-size:24px; margin:10px 0;">Félicitations honorables, <span style="color:var(--or-clair)">${pseudo}</span> !</p>
-      <p style="font-size:18px;">Votre taux vibratoire final s'élève à <strong>${score} points</strong>.</p>
-      <p style="font-size:22px; color:var(--vert-emeraude); font-weight:bold; margin-top:10px;">Rang Cosmique : ${grade.emoji} ${grade.nom}</p>
-      
-      <div class="compagnon-box" style="margin-top:20px; text-align:left;">
-        <strong>🧝 Rodolphe :</strong> « Tu as achevé le cycle de formation des Dimensions de Gaïa. Renseigne ton nom définitif et génère ton attestation haute définition. Mon analyse personnalisée y sera annexée ! »
-      </div>
-      
-      <div class="zone-boutons" style="margin-top:25px;">
-        <button class="btn-action btn-principal" onclick="declencherImpressionPDF()">📥 Exporter mon Certificat Sacré (PDF)</button>
-        <button class="btn-action btn-secondaire" onclick="location.reload()">🔄 Réinitialiser le Système</button>
-      </div>
-    </div>
-  `;
+    document.getElementById('zone-principale').innerHTML = `
+        <div style="text-align:center;">
+            <h2>Bilan Intégral de votre Initiation</h2>
+            <p style="font-size:24px; margin:15px 0;">Félicitations, noble initié <span style="color:var(--or-clair)">${pseudo}</span> !</p>
+            <p style="font-size:19px; margin-bottom:10px;">Votre score total s'élève à : <strong>${score} points</strong>.</p>
+            <p style="font-size:22px; color:var(--vert-emeraude); font-weight:bold; margin-bottom:20px;">Rang Final : ${grade.emoji} ${grade.nom}</p>
+            
+            <div class="compagnon-box" style="text-align:left;">
+                <strong>🧝 Rodolphe :</strong> « Ton parcours est exemplaire. Ton Certificat A4 a été entièrement calibré pour tenir sur une unique page sans aucune coupure. Télécharge-le dès maintenant en PDF haute définition ! »
+            </div>
+            
+            <div style="margin-top:25px;">
+                <button class="btn-action btn-principal" onclick="telechargerCertificatA4()">📥 Télécharger mon Certificat (1 Page PDF)</button>
+                <button class="btn-action btn-secondaire" onclick="location.reload()">🔄 Recommencer l'Initiation</button>
+            </div>
+        </div>
+    `;
+    faireParlerRodolphe(`Félicitations ${pseudo}. Tu as terminé ton initiation avec un score de ${score} points. Tu as atteint le rang de ${grade.nom}. Télécharge ton certificat.`);
 }
 
-function declencherImpressionPDF() {
-  const grade = obtenirGradeActuel();
-  
-  // Remplissage dynamique des métadonnées du certificat
-  document.getElementById('pdf-output-pseudo').textContent = pseudo;
-  document.getElementById('pdf-output-grade').textContent = `${grade.emoji} ${grade.nom}`;
-  document.getElementById('pdf-output-score').textContent = `${score} PTS`;
-  document.getElementById('pdf-output-emoji').textContent = grade.emoji;
-  
-  // Formatage propre de la charte environnementale
-  let htmlCharte = "";
-  if (j3_reponses.length > 0) {
-    j3_reponses.forEach((rep, index) => {
-      htmlCharte += `<strong>Étape ${index+1} :</strong> ${rep}<br>`;
+// ============================================================
+// SYSTEME DE TÉLÉCHARGEMENT COMPACTÉ SUR 1 PAGE UNIQUE
+// ============================================================
+function telechargerCertificatA4() {
+    const grade = obtenirGradeActuel();
+    
+    document.getElementById('pdf-output-pseudo').textContent = pseudo;
+    document.getElementById('pdf-output-grade').textContent = `${grade.emoji} ${grade.nom}`;
+    document.getElementById('pdf-output-score').textContent = `${score} POINTS`;
+    document.getElementById('pdf-output-emoji').textContent = grade.emoji;
+    
+    let charteHtml = "";
+    if (j3_reponses.length > 0) {
+        j3_reponses.slice(0, 3).forEach((rep, idx) => {
+            charteHtml += `• <strong>Engagement ${idx+1} :</strong> ${rep}<br>`;
+        });
+        if(j3_reponses.length > 3) charteHtml += `• <em>Et ${j3_reponses.length - 3} autres promesses élémentaires...</em>`;
+    } else {
+        charteHtml = "<em>Aucun engagement écrit enregistré.</em>";
+    }
+    document.getElementById('pdf-output-charte').innerHTML = charteHtml;
+    
+    let msg = "";
+    if (score >= 170) msg = `« Splendide ${pseudo}. Votre communion avec le Phénix et les Dévas est absolue. Vous êtes une lumière pour ce monde. »`;
+    else if (score >= 100) msg = `« Bravo ${pseudo}. Votre sensibilité aux Dryades et aux arbres sacrés est réelle. Continuez à protéger le Vivant ! »`;
+    else msg = `« L'éveil commence, ${pseudo}. Prenez le temps de méditer au cœur des bois et écoutez le murmure des Elfes. »`;
+    document.getElementById('pdf-output-rodolphe').textContent = msg;
+    
+    const d = new Date();
+    document.getElementById('pdf-output-date').textContent = d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+
+    const zoneCertificat = document.getElementById('print-zone-a4');
+    zoneCertificat.parentElement.style.display = 'block'; 
+
+    // Configuration stricte contre le saut de page
+    const optionsCapture = {
+        margin:       0,
+        filename:     `Certificat_Gaia_${pseudo}.pdf`,
+        image:        { type: 'jpeg', quality: 1.0 },
+        html2canvas:  { scale: 2, useCORS: true, logging: false },
+        jsPDF:        { unit: 'pt', format: 'a4', orientation: 'landscape' }
+    };
+
+    html2pdf().set(optionsCapture).from(zoneCertificat).save().then(() => {
+        zoneCertificat.parentElement.style.display = 'none'; 
     });
-  } else {
-    htmlCharte = "<em>Aucune charte rédigée sur les plans matériels.</em>";
-  }
-  document.getElementById('pdf-output-charte').innerHTML = htmlCharte;
-  
-  // Génération dynamique du message personnalisé de Rodolphe
-  let messageRodolphe = "";
-  if (score >= 120) {
-    messageRodolphe = `« Splendide, Maître ${pseudo}. Vos réponses limpides démontrent une fusion totale avec le Grand Tout. Vous êtes digne de siéger au Haut Conseil Universel de Gaïa. »`;
-  } else if (score >= 60) {
-    messageRodolphe = `« Bel effort, ${pseudo}. Vos intentions environnementales sont pures, mais veillez à moins solliciter d'indices à l'avenir pour fortifier votre propre intuition chamanique. »`;
-  } else {
-    messageRodolphe = `« Le chemin de l'éveil ne fait que commencer, jeune initié. Restez à l'écoute des forces végétales et renouvelez vos vœux d'harmonie. »`;
-  }
-  document.getElementById('pdf-output-rodolphe').textContent = messageRodolphe;
-  
-  const d = new Date();
-  document.getElementById('pdf-output-date').textContent = d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
-
-  // Exécution du rendu PDF Haute Qualité proportionné
-  const element = document.getElementById('certificat-pdf-canvas');
-  element.parentElement.style.display = 'block'; 
-
-  const optionsConfiguration = {
-    margin:       0,
-    filename:     `Certificat_Gaia_${pseudo}.pdf`,
-    image:        { type: 'jpeg', quality: 1.0 },
-    html2canvas:  { scale: 2, useCORS: true, logging: false },
-    jsPDF:        { unit: 'pt', format: [950, 650], orientation: 'landscape' }
-  };
-
-  html2pdf().set(optionsConfiguration).from(element).save().then(() => {
-    element.parentElement.style.display = 'none'; 
-  });
 }
 
-// ============================================================
-// LOGIQUE COMMUNE & UTILS
-// ============================================================
 function melangerArray(arr) {
-  const t = [...arr]; for (let i = t.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [t[i], t[j]] = [t[j], t[i]]; } return t;
+    const cp = [...arr];
+    for (let i = cp.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cp[i], cp[j]] = [cp[j], cp[i]];
+    }
+    return cp;
 }
 
-function genererFondsFlottants() {
-  const container = document.getElementById('particules'); const teintes = ['#c9a84c','#00f3ff','#00ff66','#ffffff'];
-  for (let i = 0; i < 20; i++) {
-    const drop = document.createElement('div'); drop.className = 'particule'; const taille = 2 + Math.random() * 3;
-    drop.style.cssText = `width:${taille}px; height:${taille}px; background:${teintes[Math.floor(Math.random()*teintes.length)]}; left:${Math.random()*100}vw; animation-duration:${7+Math.random()*10}s; animation-delay:${Math.random()*4}s;`;
-    container.appendChild(drop);
-  }
+function générerParticules() {
+    const c = document.getElementById('particules');
+    const clrs = ['#c9a84c','#00f3ff','#00ff66','#ffffff'];
+    for (let i = 0; i < 22; i++) {
+        const p = document.createElement('div'); p.className = 'particule';
+        const t = 2 + Math.random() * 3;
+        p.style.cssText = `width:${t}px; height:${t}px; background:${clrs[Math.floor(Math.random()*clrs.length)]}; left:${Math.random()*100}vw; animation-duration:${7+Math.random()*7}s; animation-delay:${Math.random()*4}s;`;
+        c.appendChild(p);
+    }
 }
 
-genererFondsFlottants();
+générerParticules();
 afficherAccueil();
 </script>
 </body>
 </html>
+
